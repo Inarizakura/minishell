@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cwijaya <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dphang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:59:06 by cwijaya           #+#    #+#             */
-/*   Updated: 2024/04/22 22:31:04 by cwijaya          ###   ########.fr       */
+/*   Updated: 2024/04/23 16:47:27 by dphang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,10 +190,14 @@ int	execute_ast(t_minishell **mnsh, int *opipe)
 				signal(SIGINT, SIG_IGN);
 				waitpid(id, &exit_status, 0);
 				if (WIFEXITED(exit_status))
-				{
 					(*mnsh)->exit_code = WEXITSTATUS(exit_status);
-					if (g_sig_received)
+				if (WIFSIGNALED(exit_status))
+				{
+					if (WTERMSIG(exit_status) == SIGINT)
+					{
+						g_sig_received = 1;
 						printf("\n");
+					}
 				}
 				signal(SIGINT, sigint_handler);
 			}
