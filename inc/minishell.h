@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cwijaya <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dphang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 23:28:45 by dphang            #+#    #+#             */
-/*   Updated: 2024/04/23 19:35:55 by cwijaya          ###   ########.fr       */
+/*   Updated: 2024/04/24 12:36:31 by dphang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,8 @@ t_type				get_ops_type(char *ops);
 t_dls				*tokenize_operation(char **input);
 t_dls				*tokenize_param(char **input, t_minishell **mnsh);
 // pipe
-t_ast				**populate_children(t_dls *tokens, int count, t_minishell **mnsh);
+t_ast				**populate_children(t_dls *tokens, int count,
+						t_minishell **mnsh);
 void				check_heredoc(t_dls *tokens, t_minishell **mnsh);
 int					count_pipe(t_dls *tokens);
 int					delim_check(char *hline, char *delim);

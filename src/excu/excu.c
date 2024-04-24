@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excu.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cwijaya <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dphang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 09:40:29 by dphang            #+#    #+#             */
-/*   Updated: 2024/04/23 19:46:22 by cwijaya          ###   ########.fr       */
+/*   Updated: 2024/04/24 12:48:37 by dphang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,23 @@ int	builtins(char **cmd, t_minishell **mnsh)
 	return (0);
 }
 
-char **split_cmd(char **cmd)
+void	split_cmd_mallloc(char ***new_cmd, char **temp, char **cmd)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (temp[i])
+		i++;
+	while (cmd[j])
+		j++;
+	*new_cmd = malloc(sizeof(char *) * (i + j + 1));
+	if (*new_cmd == NULL)
+		return ;
+}
+
+char	**split_cmd(char **cmd)
 {
 	int		i;
 	int		j;
@@ -53,15 +69,7 @@ char **split_cmd(char **cmd)
 
 	temp = ft_split(cmd[0], ' ');
 	free(cmd[0]);
-	i = 0;
-	j = 0;
-	while (temp[i])
-		i++;
-	while (cmd[j])
-		j++;
-	new_cmd = malloc(sizeof(char *) * (i + j + 1));
-	if (new_cmd == NULL)
-		return (NULL);
+	split_cmd_mallloc(&new_cmd, temp, cmd);
 	i = -1;
 	j = -1;
 	while (temp[++i])
@@ -74,23 +82,22 @@ char **split_cmd(char **cmd)
 	return (new_cmd);
 }
 
+// void	free_av(char **av)
+// {
+// 	int	i;
 
-void	free_av(char **av)
-{
-	int	i;
-
-	i = 0;
-	while (av[i])
-	{
-		free(av[i]);
-		i++;
-	}
-	free(av);
-}
+// 	i = 0;
+// 	while (av[i])
+// 	{
+// 		free(av[i]);
+// 		i++;
+// 	}
+// 	free(av);
+// }
 
 int	excu(char **cmd, t_minishell **mnsh)
 {
-	int exit_code;
+	int	exit_code;
 
 	exit_code = 0;
 	if (cmd[0])
@@ -102,6 +109,7 @@ int	excu(char **cmd, t_minishell **mnsh)
 		else
 			excu_cmd(cmd, mnsh);
 	}
-	free_av(cmd);
+	// free_av(cmd);
+	free_arr(&cmd);
 	return (exit_code);
 }
